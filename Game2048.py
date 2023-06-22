@@ -13,10 +13,10 @@ class Game(tk.Frame):
         self.main_grid.grid(pady=(110, 0))
 
         #create Gui
-        self.make_GUI
+        self.make_GUI()
 
         #start game function
-        
+        self.start_game()
         #key bindings
         self.master.bind("<Left", self.left)
         self.master.bind("<Right", self.right)
@@ -132,7 +132,6 @@ class Game(tk.Frame):
 
         self.score=0
 
-
     def stack (self): 
         new_matrix = [[0] * 4 for _ in range(4)]
         for i in range(4):
@@ -143,7 +142,6 @@ class Game(tk.Frame):
                     fill_position+=1
         self.matrix= new_matrix
     
-
     def combine(self):
         for i in range(4):
             for j in range (3):
@@ -167,9 +165,72 @@ class Game(tk.Frame):
                 new_matrix[i][j]= self.matrix[j][i]
         self.matrix= new_matrix
          
+    def add_new_tile(self):
+        row= random.randint(0,3)
+        col= random.randint(0,3)
 
+        while(self.matrix[row][col] != 0):
+            row= random.randint(0,3)
+            col= random.randint(0,3)
+        self.matrix[row][col] = random.choice([2,4])
 
+    def update_GUI(self):
+        for i in range(4):
+            for j in range(4):
+                cell_value = self.matrix[i][j]
+                if cell_value == 0:
+                    self.cells[i][j]["frame"].configure(bg=self.Color_EmptyCell)
+                    self.cells[i][j]["number"].configure(
+                        bg= self.Color_EmptyCell,
+                        text=""
+                    )
+                else:
+                    self.cells[i][j]["frame"].configure(
+                        bg=self.Color_Cells[cell_value])
+                    self.cells[i][j]["number"].configure(
+                        bg= self.Color_Cells[cell_value],
+                        fg= self.Color_CellNumber[cell_value],
+                        font= self.Fonts_CellNumber[cell_value],
+                        text= str(cell_value)
+                    )
+        self.score_label.configure(text= self.score)
+        self.update_idletasks()
 
+    def left(self):
+        self.stack()
+        self.combine()
+        self.stack()
+        self.add_new_tile()
+        self.update_GUI()
+
+    def right(self):
+        self.reverse()
+        self.stack()
+        self.combine()
+        self.stack()
+        self.reverse()
+        self.add_new_tile()
+        self.update_GUI()
+        
+    def up(self):
+        self.transpose()
+        self.stack()
+        self.combine()
+        self.stack()
+        self.transpose()
+        self.add_new_tile()
+        self.update_GUI()
+
+    def down(self):
+        self.transpose()
+        self.reverse()
+        self.stack()
+        self.combine()
+        self.stack()
+        self.reverse()
+        self.transpose()
+        self.add_new_tile()
+        self.update_GUI()
 
     
 
