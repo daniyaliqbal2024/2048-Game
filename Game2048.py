@@ -13,7 +13,7 @@ class Game(tk.Frame):
         self.main_grid.grid(pady=(110, 0))
 
         #create Gui
-
+        self.make_GUI
 
         #start game function
         
@@ -97,7 +97,44 @@ class Game(tk.Frame):
 
         score_frame=tk.Frame(self)
         score_frame.place(relx=0.5, y=45, anchor="center")
+        tk.Label(
+            score_frame,
+            text= "Score",
+            font= self.Font_ScoreLabel 
+        ).grid(row=0)
+        self.score_label= tk.Label(score_frame, text="0", font=self.Font_score)
+        self.score_label.grid(row=1)
+
+    def start_game(self):
+        self.matrix = [[0]*4 for _ in range(4)]
+        row= random.randint(0,3)
+        col= random.randint(0,3)
+        self.matrix[row][col] = 2
+        self.cells[row][col]["frame"].configure(bg=self.Color_Cells[2])
+        self.cells[row][col]["number"].configure(
+            bg=self.Color_Cells[2], 
+            fg= self.Color_CellNumber[2],
+            font= self.Fonts_CellNumber[2], 
+            text= "2"
+        )
+
+        while(self.matrix[row][col] != 0):
+            row= random.randint(0,3)
+            col= random.randint(0,3)
+        self.matrix[row][col] = 2
+        self.cells[row][col]["frame"].configure(bg=self.Color_Cells[2])
+        self.cells[row][col]["number"].configure(
+            bg=self.Color_Cells[2], 
+            fg= self.Color_CellNumber[2],
+            font= self.Fonts_CellNumber[2], 
+            text= "2"
+        )
+
+        self.score=0
+
         
+
+
 
 
     
